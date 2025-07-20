@@ -6,7 +6,7 @@ Este é um microserviço em Spring Boot responsável por gerenciar tarefas de us
 
 ## 🔗 Integração
 
-Este projeto depende do projeto **usuario**. A comunicação é feita via **OpenFeign**, e o token JWT gerado na autenticação do usuário é utilizado para validar e vincular a tarefa corretamente.
+Este projeto depende do projeto **usuario**. A comunicação é feita via **FeignClient**, e o token JWT gerado na autenticação do usuário é utilizado para validar e vincular a tarefa corretamente.
 
 ---
 
