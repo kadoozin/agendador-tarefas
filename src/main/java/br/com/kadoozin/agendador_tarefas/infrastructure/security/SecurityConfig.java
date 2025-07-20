@@ -1,6 +1,6 @@
 package br.com.kadoozin.agendador_tarefas.infrastructure.security;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -12,25 +12,19 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 
 @Configuration
 @EnableWebSecurity
+@RequiredArgsConstructor
 public class SecurityConfig {
 
     public static final String SECURITY_SCHEME = "bearerAuth";
 
     // Instâncias de JwtUtil e UserDetailsService injetadas pelo Spring
     private final JwtUtil jwtUtil;
-    private final UserDetailsServiceImpl userDetailsServiceImpl;
-
-    // Construtor para injeção de dependências de JwtUtil e UserDetailsService
-    @Autowired
-    public SecurityConfig(JwtUtil jwtUtil, UserDetailsServiceImpl userDetailsServiceImpl) {
-        this.jwtUtil = jwtUtil;
-        this.userDetailsServiceImpl = userDetailsServiceImpl;
-    }
+    private final UserDetailsServiceImpl userDetailsService;
 
     // Configuração do filtro de segurança
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-        JwtRequestFilter jwtRequestFilter = new JwtRequestFilter(jwtUtil, userDetailsServiceImpl);
+        JwtRequestFilter jwtRequestFilter = new JwtRequestFilter(jwtUtil, userDetailsService);
 
         http
                 .csrf(AbstractHttpConfigurer::disable)
