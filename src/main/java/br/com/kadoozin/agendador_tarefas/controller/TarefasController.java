@@ -23,7 +23,7 @@ public class TarefasController {
         return ResponseEntity.ok(tarefasService.gravarTarefa(token, dto));
     }
 
-    @GetMapping("/eventos")
+    @GetMapping("/periodo")
     public ResponseEntity<List<TarefasDTO>> buscaListaTarefasPorPeriodo(@RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)
                                                                         LocalDateTime dataInicial,
                                                                         @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)
