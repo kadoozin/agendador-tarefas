@@ -1,6 +1,6 @@
 # 🗓️ Agendador de Tarefas
 
-Este é um microserviço em Spring Boot responsável por gerenciar tarefas de usuários. Ele está integrado com o projeto **usuario** via **Feign Client** e utiliza **JWT** para autenticação. Cada tarefa é vinculada ao usuário autenticado.
+Este é um microserviço em Spring Boot responsável por gerenciar tarefas de usuários.
 
 ---
 
