@@ -1,6 +1,7 @@
 package br.com.kadoozin.agendador_tarefas.bunisess.service;
 
-import br.com.kadoozin.agendador_tarefas.bunisess.dto.TarefasDTO;
+import br.com.kadoozin.agendador_tarefas.bunisess.dto.in.TarefasRequestDTO;
+import br.com.kadoozin.agendador_tarefas.bunisess.dto.out.TarefasResponseDTO;
 import br.com.kadoozin.agendador_tarefas.bunisess.mapper.TarefasMapper;
 import br.com.kadoozin.agendador_tarefas.bunisess.mapper.TarefasUpdateMapper;
 import br.com.kadoozin.agendador_tarefas.infrastructure.entities.TarefasEntity;
@@ -24,7 +25,7 @@ public class TarefasService {
     private final JwtUtil jwtUtil;
 
 
-    public TarefasDTO gravarTarefa(String token, TarefasDTO dto) {
+    public TarefasResponseDTO gravarTarefa(String token, TarefasRequestDTO dto) {
         if (token == null || !token.startsWith("Bearer ")) {
             throw new InvalidTokenException("Token inválido ou ausente");
         }
@@ -36,12 +37,12 @@ public class TarefasService {
             return tarefasMapper.toDTO(tarefasRepository.save(entity));
     }
 
-    public List<TarefasDTO> buscaListaTarefasAgendadasPorPeriodo(LocalDateTime dataInicial, LocalDateTime dataFinal) {
+    public List<TarefasResponseDTO> buscaListaTarefasAgendadasPorPeriodo(LocalDateTime dataInicial, LocalDateTime dataFinal) {
         return tarefasMapper.toListDTO(tarefasRepository.findByDataEventoBetweenAndStatusNotificacaoEnum(dataInicial,
                 dataFinal, StatusNotificacaoEnum.PENDENTE));
     }
 
-    public List<TarefasDTO> buscaTarefasPorEmail(String token) {
+    public List<TarefasResponseDTO> buscaTarefasPorEmail(String token) {
         String email = jwtUtil.extrairEmailToken(token.substring(7));
         return tarefasMapper.toListDTO(tarefasRepository.findByEmailUsuario(email));
     }
@@ -53,14 +54,14 @@ public class TarefasService {
         tarefasRepository.deleteById(id);
     }
 
-    public TarefasDTO alteraStatus(StatusNotificacaoEnum status, String id) {
+    public TarefasResponseDTO alteraStatus(StatusNotificacaoEnum status, String id) {
             TarefasEntity entity = tarefasRepository.findById(id)
                     .orElseThrow(() -> new ResourceNotFoundException("Tarefa não encontrada!"));
             entity.setStatusNotificacaoEnum(status);
             return tarefasMapper.toDTO(tarefasRepository.save(entity));
     }
 
-    public TarefasDTO updateDeTarefas(TarefasDTO dto, String id){
+    public TarefasResponseDTO updateDeTarefas(TarefasRequestDTO dto, String id){
             TarefasEntity entity = tarefasRepository.findById(id)
                     .orElseThrow(() -> new ResourceNotFoundException("Tarefa não encontrada!"));
             tarefasUpdateMapper.updateTarefas(dto, entity);

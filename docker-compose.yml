@@ -1,0 +1,33 @@
+version: '3.8'
+
+services:
+  postgres:
+    image: postgres:15
+    container_name: postgres
+    restart: always
+    environment:
+      POSTGRES_DB: db_agendador
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: Elijah@3346
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+  agendador-tarefas:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: agendador-tarefas
+    depends_on:
+      - postgres
+    ports:
+      - "9092:9092"
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/db_agendador
+      SPRING_DATASOURCE_USERNAME: postgres
+      SPRING_DATASOURCE_PASSWORD: Elijah@3346
+    restart: always
+
+volumes:
+  postgres_data:

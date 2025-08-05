@@ -1,9 +1,8 @@
 package br.com.kadoozin.agendador_tarefas.infrastructure.entities;
 
 import br.com.kadoozin.agendador_tarefas.infrastructure.enums.StatusNotificacaoEnum;
+import jakarta.persistence.*;
 import lombok.*;
-import org.springframework.data.annotation.Id;
-import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.time.LocalDateTime;
 
@@ -12,10 +11,11 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-@Document("tarefas")
+@Entity
+@Table(name = "tb_tarefas")
 public class TarefasEntity {
-
     @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private String id;
     private String nomeTarefa;
     private String descricao;
